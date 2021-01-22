@@ -1,0 +1,73 @@
+{
+    "name": "PWR_network",
+    "n_gpu": 1,
+
+    "arch": {
+        "type": "my3DUnet",
+        "args": {
+            "n_features": 64,
+            "n_classes": 1,
+            "image_size": 64,
+            "dropout_rate": 0.05
+        }
+    },
+    "data_loader": {
+        "type": "RHDataLoader_dfield",
+        "args":{
+            "image_dir": "C:/Users/kajul/Documents/DATA/ROI/img/",
+            "label_dir": "C:/Users/kajul/Documents/DATA/ROI/dfield/",
+            "data_list": "C:/Users/kajul/Documents/DATA/ROI/RH_batch1_train.txt",
+            "image_size": 64,
+            "batch_size": 1,
+            "shuffle": true,
+            "validation_split": 0.1,
+            "num_workers": 8,
+	    "n_classes": 2
+        }
+    },
+    "optimizer": {
+        "type": "Adam",
+        "args":{
+            "lr": 0.0001,
+            "weight_decay": 0,
+            "amsgrad": true
+        }
+    },
+    "loss": "weighted_mse_loss",
+    "metrics": [
+    ],
+    "lr_scheduler": {
+        "type": "StepLR",
+        "args": {
+            "step_size": 100,
+            "gamma": 1
+        }
+    },
+    "trainer": {
+        "epochs": 100,
+
+        "save_dir": "saved/",
+        "save_period": 1,
+        "verbosity": 2,
+        
+        "monitor": "min val_loss",
+        "early_stop": 10,
+
+        "tensorboard": true
+    },
+    "ROI_specs": {
+	"base_dir": "C:/Users/kajul/Documents/DATA/",
+	"out_dir": "C:/Users/kajul/Documents/DATA/ROI",
+        "roi_physical_size": 140,
+	"roi_physical_nvoxel": 64,
+	"default_ct_value": -2048
+    },
+    "sdf_specs": {
+	"mrf_exe": "C:/Program Files/MRFTools/MRFSurface.exe",
+	"mrf_scaling": 0.5,
+	"max_mrf_field_size": 10000000,
+	"pad_voxels": 20,
+	"prior_type": 0,
+	"show_MRFoutput": 1
+    }
+}

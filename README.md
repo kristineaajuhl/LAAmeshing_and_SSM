@@ -53,20 +53,20 @@ MRFtools
 elastix
 
 # Directory setup:
-> -- filelist.txt  
-> -- img  
-> -- lab  
-> -- surf_models  
-> -- ROI  
->>  -- lowres_label  
->>  -- img  
->>  -- lab  
->>  --dfield  
-> -- Predictions  
->>  -- lab  
->>  -- dfield  
->> -- surf_models  
->>  -- LAA decoupling  
+-- filelist.txt  
+-- img  
+-- lab  
+-- surf_models  
+-- ROI  
+$\qquad$  -- lowres_label  
+$\qquad$  -- img  
+$\qquad$  -- lab  
+$\qquad$  --dfield  
+-- Predictions  
+$\qquad$  -- lab  
+$\qquad$  -- dfield  
+$\qquad$ -- surf_models  
+$\qquad$  -- LAA decoupling  
 >>>    -- distance_filds  
 >>>    -- LAA_LM  
 >>>    -- LAA_only  

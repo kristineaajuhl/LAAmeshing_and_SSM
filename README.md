@@ -53,13 +53,13 @@ MRFtools
 elastix
 
 # Directory setup:
--- filelist.txt  
--- img  
--- lab  
--- surf_models  
--- ROI  
-$\qquad$  -- lowres_label  
-$\qquad$  -- img  
+  * filelist.txt  
+  * img  
+  * lab  
+  * surf_models  
+  * ROI  
+    * lowres_label  
+    * img  
 $\qquad$  -- lab  
 $\qquad$  --dfield  
 -- Predictions  

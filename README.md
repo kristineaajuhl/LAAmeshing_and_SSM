@@ -60,14 +60,14 @@ elastix
   * ROI  
     * lowres_label  
     * img  
-$\qquad$  -- lab  
-$\qquad$  --dfield  
--- Predictions  
-$\qquad$  -- lab  
-$\qquad$  -- dfield  
-$\qquad$ -- surf_models  
-$\qquad$  -- LAA decoupling  
->>>    -- distance_filds  
->>>    -- LAA_LM  
->>>    -- LAA_only  
->>>    -- output  
+    * lab  
+    * dfield  
+  * Predictions  
+    * lab  
+    * dfield  
+    * surf_models  
+    * LAA decoupling  
+      * distance_filds  
+      * LAA_LM  
+      * LAA_only  
+      * output  

@@ -1,5 +1,5 @@
 # LAA segmentation, mesh modelling and statistical shape modelling
-This repository contains the implementations from the paper: "XXX". 
+This repository contains the implementations from the paper: "XXX". \n
 
 # Image segmentation and mesh model creation
 Download models: 

@@ -40,9 +40,9 @@ python register_to_template.py --n <path_to_filelist.txt> --s <path_to_surfaces>
 ```
 
 Decouple LAA from remaining LA  
-Decouples the LAA from the remaining LA and assigns five anatomical landmarks with or without visualizing the process  
+Decouples the LAA from the remaining LA and assigns five anatomical landmarks (evt. visualizing the steps)
 ```
-python cut_all_examples.py --n <path_to_filelist.txt> --s <path_to_original_surfaces> --c <path_to_surfaces_in_correspondence> --v <True/False>  
+python cut_all_examples.py --n <path_to_filelist.txt> --s <path_to_original_surfaces> --c <path_to_surfaces_in_correspondence> (--v )
 ```
 
 # LAA shape model

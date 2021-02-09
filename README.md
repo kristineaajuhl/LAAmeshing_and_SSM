@@ -56,6 +56,7 @@ COMING UP
 
 # Dependencies
 **MRFtools** is needed for creating SDFs, extracting SDFs and remeshing surfaces. The software can be downloaded from here: http://www2.imm.dtu.dk/image/MRFSurface/download.html and the directory to the executable should be set in the <config.json> files and in "SSM/register_to_template.py" l. 21+22.
+
 **elastix** is needed for registration of surfaces in decoupling and shape modelling. It can downloaded here: : http://elastix.isi.uu.nl/ and the directory should be set in "SSM/register_to_template.py" l. 21+22. 
 
 # Directory setup:

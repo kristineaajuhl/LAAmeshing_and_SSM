@@ -4,7 +4,9 @@ This repository contains the implementations from the paper: "XXX".
 # Image segmentation and mesh model creation
 Download models:  
 Download the models from the URL below and place them in "/saved/trained/"  
+
 https://www.dropbox.com/s/kfwzclpb89xnihr/model_ROI.pth?dl=0
+
 https://www.dropbox.com/s/5qwjbytb9zdtbtp/model_PWR.pth?dl=0
 
 

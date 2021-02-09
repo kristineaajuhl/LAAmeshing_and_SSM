@@ -4,7 +4,9 @@ This repository contains the implementations from the paper: "XXX".
 # Image segmentation and mesh model creation
 Download models:  
 Download the models from the URL below and place them in "/saved/trained/"  
-XXX Make link to pretrained models  
+https://www.dropbox.com/s/kfwzclpb89xnihr/model_ROI.pth?dl=0
+https://www.dropbox.com/s/5qwjbytb9zdtbtp/model_PWR.pth?dl=0
+
 
 Train new models:  
 ```
@@ -38,6 +40,7 @@ python create_SDF.py --n <path_to_filelist.txt> --s <path_to_surfaces> --p <"Ful
 
 Register to common template  
 Registers all LAs to a common template (point correspondence). Use precomputed template (0) or make new one from 3 iterations on your data (1)  
+(Make sure to check the elastix and MRF directories in line 21-24)
 ```
 python register_to_template.py --n <path_to_filelist.txt> --s <path_to_surfaces> --p <"Full"/"LAA"> --t <0/1>  
 ```
@@ -52,8 +55,8 @@ python cut_all_examples.py --n <path_to_filelist.txt> --s <path_to_original_surf
 COMING UP 
 
 # Dependencies
-MRFtools  
-elastix
+**MRFtools** is needed for creating SDFs, extracting SDFs and remeshing surfaces. The software can be downloaded from here: http://www2.imm.dtu.dk/image/MRFSurface/download.html and the directory to the executable should be set in the <config.json> files and in "SSM/register_to_template.py" l. 21+22.
+**elastix** is needed for registration of surfaces in decoupling and shape modelling. It can downloaded here: : http://elastix.isi.uu.nl/ and the directory should be set in "SSM/register_to_template.py" l. 21+22. 
 
 # Directory setup:
   * filelist.txt  

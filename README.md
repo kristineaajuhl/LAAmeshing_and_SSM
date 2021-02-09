@@ -7,10 +7,16 @@ Download the models from the URL below and place them in "/saved/trained/"
 XXX Make link to pretrained models  
 
 Train new models:  
-COMING UP
+```
+python trainROI.py --c <config_file.json> (--r <resume_from_epoch_number> --d <device>)
+python SDF_create_training_data.py --c <config_file.json> --n <path_to_filelist.txt>
+python trainSDF.py --c <config_file.json> (--r <resume_from_epoch_number> --d <device>)
+```
+There is a separate config-file for ROI and SDF. The saved models is located in "/saved/model/<time_stamp>/model_best.pth" and should be copied to "/saved/trained/model_ROI.pth" or "/saved/trained/model_SDF.pth" for prediction. 
+
 
 Predict ROI  
-Takes the input images from the "img" folder in the same folder as the filelist and saves a lowresolution label (lowres_label) and the cropped image (img) in the ROI subfolder.  
+Takes the input images from the "img" folder in the same folder as the filelist and saves a low-resolution label (lowres_label) and the cropped image (img) in the ROI subfolder.  
 ```
 python predictROI.py --c <config_file.json> --n <path_to_file.nii> (--d <device>)  
 python predictROI.py --c <config_file.json> --n <path_to_filelist.txt> (--d <device>)  
@@ -22,9 +28,6 @@ Takes the cropped images from the ROI/img folder and saves the predicted label (
 python predictSDF.py --c <config_file.json> --n <path_to_file.nii> (--d <device>)  
 python predictSDF.py --c <config_file.json> --n <path_to_filelist.txt> (--d <device>)  
 ```
-
-Train new models:  
-COMING UP
 
 # LAA decoupling
 Create distance fields  

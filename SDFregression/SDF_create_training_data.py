@@ -11,11 +11,11 @@ from parse_config import ConfigParser
 import os
 
 def main(args):
-    predict_from_model = False
-    crop_training_images = False
-    crop_training_labels = False
-    create_surfacemodel = False
-    create_SDF = False
+    predict_from_model = True
+    crop_training_images = True
+    crop_training_labels = True
+    create_surfacemodel = True
+    create_SDF = True
     crop_SDF = True
     
     

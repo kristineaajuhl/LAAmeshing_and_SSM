@@ -12,11 +12,11 @@
         }
     },
     "data_loader": {
-        "type": "RHDataLoader_dfield",
+        "type": "RHDataLoader_SDF",
         "args":{
-            "image_dir": "C:/Users/kajul/Documents/DATA/ROI/img/",
-            "label_dir": "C:/Users/kajul/Documents/DATA/ROI/dfield/",
-            "data_list": "C:/Users/kajul/Documents/DATA/ROI/RH_batch1_train.txt",
+            "image_dir": "E:/DATA/TEST/ROI/img/",
+            "label_dir": "E:/DATA/TEST/ROI/dfield/",
+            "data_list": "E:/DATA/TEST/RH_batch1_train.txt",
             "image_size": 64,
             "batch_size": 1,
             "shuffle": true,
@@ -56,8 +56,8 @@
         "tensorboard": true
     },
     "ROI_specs": {
-	"base_dir": "C:/Users/kajul/Documents/DATA/",
-	"out_dir": "C:/Users/kajul/Documents/DATA/ROI",
+	"base_dir": "E:/DATA/TEST",
+	"out_dir": "E:/DATA/TEST/ROI",
         "roi_physical_size": 140,
 	"roi_physical_nvoxel": 64,
 	"default_ct_value": -2048

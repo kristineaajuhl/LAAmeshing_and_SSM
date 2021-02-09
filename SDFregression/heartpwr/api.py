@@ -232,7 +232,13 @@ class HeartPWR:
         # l : Means that only larget connected component surface is kept
         # E : Target edge length for remeshing (if set to -1 a value is automatically computed)
         # (iso-surface extraction and remeshing is done in one operation)
-        subprocess.call([self.mrf_exe, '-i', sdf_name, '-o', temp_name, '-l', '-E', str(edge_length)])
+        quiet = True
+        if quiet:
+            output_pipe = open(os.devnull, 'w')       # Ignore text output from MRF.exe.
+        else:
+            output_pipe = None        
+        
+        subprocess.call([self.mrf_exe, '-i', sdf_name, '-o', temp_name, '-l', '-E', str(edge_length)],stdout=output_pipe)
 
         fin = vtk.vtkPolyDataReader()
         fin.SetFileName(temp_name)

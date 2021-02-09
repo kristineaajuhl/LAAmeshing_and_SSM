@@ -69,7 +69,7 @@ def process_file_list(config, file_name, out_base):
 
 def main(config):
     name = str(config.name)
-    out_name = os.path.split(os.path.split(name)[0])[0] + "/ROI/"
+    out_name = config.config["ROI_specs"]["out_dir"]#os.path.split(os.path.split(name)[0])[0] + "/ROI/"
     
     # Create directories for outputs:
     if not os.path.exists(out_name):

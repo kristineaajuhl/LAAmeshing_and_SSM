@@ -10,6 +10,7 @@ import os
 import Methods
 from numpy import loadtxt
 import vtk
+import Methods_wLM as Methods_wLM
 
 def get_all_file_names_from_txt(data_file):
     file_ids = loadtxt(data_file, dtype=str, ndmin=1, comments="#", delimiter=",", unpack=False)
@@ -31,38 +32,60 @@ def main(args):
     vtk_out.SetInstance(vtk_out)
 
     rms_thres = 2  # RMS threshold. The script only compute mean shape based on point cor less than threshold
-    run_icp = True
-    run_mrf_sdf = True
-    run_masks = True
+    run_icp = False
+    run_mrf_sdf = False
+    run_masks = False
     run_registration = True
     run_mrf_cor = True
     n_threads = 12
 
     filename = args.name
-    base_path = os.path.split(args.surfacepath)[0] + "/LAA_decoupling/"
-    target_surfaces_dir = args.surfacepath
-    target_sdf_dir = base_path + "/distance_fields/"
-    mrf_cor_output_dir = base_path + "/output/"
-    target_name_list = get_all_file_names_from_txt(filename)
+
     
     if args.template == 0 and args.part == "Full":
+        base_path = os.path.split(args.surfacepath)[0] + "/LAA_decoupling/"
+        target_surfaces_dir = args.surfacepath
+        target_sdf_dir = base_path + "/distance_fields/"
+        mrf_cor_output_dir = base_path + "/output/"
+        target_name_list = get_all_file_names_from_txt(filename)
         source_name = "template"
         source_surface_file = os.getcwd() + "/template/full_template.vtk"
         parameter_file = os.getcwd() + "/template/SplineTransform_noLM.txt"
         n_iterations = 1
     elif args.template == 1 and args.part == "Full":
+        base_path = os.path.split(args.surfacepath)[0] + "/LAA_decoupling/"
+        target_surfaces_dir = args.surfacepath
+        target_sdf_dir = base_path + "/distance_fields/"
+        mrf_cor_output_dir = base_path + "/output/"
+        target_name_list = get_all_file_names_from_txt(filename)
         source_name = target_name_list[0]
         source_surface_file = target_surfaces_dir + "/" + source_name + ".vtk"
         parameter_file = os.getcwd() + "/template/SplineTransform_noLM.txt"
         n_iterations = 3
     if args.template == 0 and args.part == "LAA":
+        base_path = os.path.split(args.surfacepath)[0]
+        target_surfaces_dir = args.surfacepath
+        target_sdf_dir = base_path + "/distance_fields/"
+        mrf_cor_output_dir = base_path + "/output/"
+        target_name_list = get_all_file_names_from_txt(filename)
+        dirLandmarks = base_path + "/LAA_LM/"
+        
         source_name = "template"
         source_surface_file = os.getcwd() + "/template/laa_template.vtk"
-        parameter_file = os.getcwd() + "/template/SplineTransform_wLM.txt"
+        sourceLandmarkFile =  os.getcwd() + "/template/laa_template.txt"
+        parameter_file = os.getcwd() + "/template/SplineTransform_noLM.txt"
         n_iterations = 1
     elif args.template == 1 and args.part == "LAA":
+        base_path = os.path.split(args.surfacepath)[0]
+        target_surfaces_dir = args.surfacepath
+        target_sdf_dir = base_path + "/distance_fields/"
+        mrf_cor_output_dir = base_path + "/output/"
+        dirLandmarks = base_path + "/LAA_LM/"
+        target_name_list = get_all_file_names_from_txt(filename)
+        
         source_name = target_name_list[0]
         source_surface_file = target_surfaces_dir + "/" + source_name + ".vtk"
+        sourceLandmarkFile = dirLandmarks + "/" + source_name + ".txt"
         parameter_file = os.getcwd() + "/template/SplineTransform_wLM.txt"
         n_iterations = 3
     
@@ -80,20 +103,28 @@ def main(args):
         
         print('ICP aligning source surface to all target surface')
         icp_output_surface = os.path.join(iteration_output_dir, 'ICP_Surface')
+        icpOutputLandmarks = os.path.join(iteration_output_dir,'ICP_Landmark')
         if not os.path.exists(icp_output_surface):
             os.makedirs(icp_output_surface)
         if run_icp:
-            icpArgs = list(
-                zip(target_name_list, [source_surface_file] * N, [target_surfaces_dir] * N, [icp_output_surface] * N))
-            Methods.imap_unordered_bar(Methods.ICP, icpArgs, n_threads)
+            if args.part == "Full":
+                icpArgs = list(
+                    zip(target_name_list, [source_surface_file] * N, [target_surfaces_dir] * N, [icp_output_surface] * N))
+                Methods.imap_unordered_bar(Methods.ICP, icpArgs, n_threads)
+            elif args.part == "LAA":  
+                if not os.path.exists(icpOutputLandmarks):
+                    os.makedirs(icpOutputLandmarks)
+                icpArgs = list(zip(target_name_list, [source_surface_file]*N,[target_surfaces_dir] * N, [icp_output_surface] * N,
+                               [dirLandmarks]*N, [sourceLandmarkFile]*N,[icpOutputLandmarks]*N))
+                Methods_wLM.imap_unordered_bar(Methods_wLM.ICP, icpArgs, n_threads)
         
         print('Create Distance Fields from ICP aligned surfaces')
         aligned_source_sdf = os.path.join(iteration_output_dir, 'DistanceFields')
         if not os.path.exists(aligned_source_sdf):
             os.makedirs(aligned_source_sdf)
         if run_mrf_sdf:
-            args = list(zip(target_name_list, [icp_output_surface] * N, [aligned_source_sdf] * N, [mrf_exe] * N))
-            Methods.imap_unordered_bar(Methods.DistanceField, args, n_threads)
+            args1 = list(zip(target_name_list, [icp_output_surface] * N, [aligned_source_sdf] * N, [mrf_exe] * N))
+            Methods.imap_unordered_bar(Methods.DistanceField, args1, n_threads)
             
         print('Create sampling mask')
         mask_size = 6
@@ -101,8 +132,8 @@ def main(args):
         if not os.path.exists(out_mask):
             os.makedirs(out_mask)
         if run_masks:
-            args = list(zip(target_name_list, [aligned_source_sdf] * N, [mask_size] * N, [out_mask] * N))
-            Methods.imap_unordered_bar(Methods.CreateSamplingMask, args, n_threads)
+            args2 = list(zip(target_name_list, [aligned_source_sdf] * N, [mask_size] * N, [out_mask] * N))
+            Methods.imap_unordered_bar(Methods.CreateSamplingMask, args2, n_threads)
             
         print('Distance field based registration')
         registration_out_dir = os.path.join(iteration_output_dir, 'Registration')
@@ -114,13 +145,22 @@ def main(args):
 
         print('Running distance Field registration')
         if run_registration:
-            args = list(zip(
-                target_name_list, [source_name] * N, [target_sdf_dir] * N, [aligned_source_sdf] * N,
+            if args.part == "Full":
+                args3 = list(zip(
+                    target_name_list, [source_name] * N, [target_sdf_dir] * N, [aligned_source_sdf] * N,
+                                      [target_surfaces_dir] * N,
+                                      [icp_output_surface] * N, [out_mask] * N, [parameter_file] * N,
+                                      [registration_out_dir] * N, [transformed_surface_dir] * N,
+                                      [elastix_dir] * N))
+                Methods.imap_unordered_bar(Methods.DistanceFieldRegistration, args3, n_threads)
+            elif args.part == "LAA":
+                args3 = list(zip(
+                    target_name_list, [source_name] * N, [target_sdf_dir] * N, [aligned_source_sdf] * N,
                                   [target_surfaces_dir] * N,
                                   [icp_output_surface] * N, [out_mask] * N, [parameter_file] * N,
                                   [registration_out_dir] * N, [transformed_surface_dir] * N,
-                                  [elastix_dir] * N))
-            Methods.imap_unordered_bar(Methods.DistanceFieldRegistration, args, n_threads)
+                                  [elastix_dir] * N, [dirLandmarks]*N,[icpOutputLandmarks]*N))
+                Methods_wLM.imap_unordered_bar(Methods_wLM.DistanceFieldRegistration, args3, n_threads)
 
         print('Running MRF point correspondence')
         mrf_cor_out_dir = os.path.join(iteration_output_dir, 'MRFCor')
@@ -128,10 +168,10 @@ def main(args):
             os.makedirs(mrf_cor_out_dir)
         if run_mrf_cor:
             # N = 1
-            args = list(zip(target_name_list, [source_name] * N, [target_surfaces_dir] * N,
+            args4 = list(zip(target_name_list, [source_name] * N, [target_surfaces_dir] * N,
                             [transformed_surface_dir] * N,
                             [mrf_cor_out_dir] * N, [1] * N, [mrf_cor_exe] * N))
-            Methods.imap_unordered_bar(Methods.MRFCor, args, n_threads)
+            Methods.imap_unordered_bar(Methods.MRFCor, args4, n_threads)
             
         # -------------------------------------------------------------------------------------------------------------
         # Compute mean surface          

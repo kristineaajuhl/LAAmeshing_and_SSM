@@ -37,24 +37,35 @@ python predictSDF.py --c <config_file.json> --n <path_to_filelist.txt> (--d <dev
 **Create distance fields**  
 Creates a SDF from all surfaces in the filelist.txt in the folder surfacepath  
 ```
-python create_SDF.py --n <path_to_filelist.txt> --s <path_to_surfaces> --p <"Full"/"LAA">  
+python create_SDF.py --n <path_to_filelist.txt> --s <path_to_surfaces> --p Full 
 ```
 
 **Register to common template**  
 Registers all LAs to a common template (point correspondence). Use precomputed template (0) or make new one from 3 iterations on your data (1)  
 (Make sure to check the elastix and MRF directories in line 21-24)
 ```
-python register_to_template.py --n <path_to_filelist.txt> --s <path_to_surfaces> --p <"Full"/"LAA"> --t <0/1>  
+python register_to_template.py --n <path_to_filelist.txt> --s <path_to_surfaces> --p Full --t <0/1>  
 ```
 
 **Decouple LAA from remaining LA**  
 Decouples the LAA from the remaining LA and assigns five anatomical landmarks (evt. visualizing the steps)
 ```
-python cut_all_examples.py --n <path_to_filelist.txt> --s <path_to_original_surfaces> --c <path_to_surfaces_in_correspondence> (--v )
+python cut_all_examples.py --n <path_to_filelist.txt> --s <path_to_original_surfaces> --c <path_to_surfaces_in_correspondence> (--v)
 ```
 
 # LAA shape model
-COMING UP 
+Create SDFs for the LAA only
+```
+python create_SDF.py --n <path_to_filelist.txt> --s <path_to_surfaces> --p LAA 
+```
+
+You will need landmarks to get good registration of the LAAs. If you do not have landmarks, you can try “find_and_save_LM” function in “cut_class”. 
+The LAAs are registered to a common template:
+```
+python register_to_template.py --n <path_to_filelist.txt> --s <path_to_surfaces> --p LAA --t <0/1>  
+```
+
+CODE FOR INVESTIGATING THE SHPAE MODEL IS COMING UP!
 
 # Dependencies
 **MRFtools** is needed for creating SDFs, extracting SDFs and remeshing surfaces. The software can be downloaded from here: http://www2.imm.dtu.dk/image/MRFSurface/download.html and the directory to the executable should be set in the <config.json> files and in "SSM/register_to_template.py" l. 21+22.

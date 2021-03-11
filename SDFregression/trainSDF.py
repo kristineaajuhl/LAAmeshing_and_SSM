@@ -6,7 +6,7 @@ import torch
 import data_loader.data_loaders as module_data
 import model.loss as module_loss
 import model.metric as module_metric
-import model.model_ROI as module_arch
+import model.model_PWR as module_arch
 from parse_config import ConfigParser
 from trainer import Trainer
 import matplotlib.pyplot as plt

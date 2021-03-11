@@ -79,10 +79,10 @@ class HeartROI:
         translation.SetOffset((0, 0, 0))
         
         interpolator = sitk.sitkLinear
-        if "label" in file_name:
+        if "lab" in file_name:
             interpolator = sitk.sitkNearestNeighbor
             self.default_ct_value = 0
-        if "sdf" in file_name: 
+        if "dfield" in file_name: 
             self.default_ct_value = 1000
         
         resampled_image = sitk.Resample(img, roi_image, translation, interpolator, self.default_ct_value)
